@@ -1,0 +1,53 @@
+*{
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+}
+
+#page-heading{
+    text-align: center;
+    margin-top: 25px;
+    color: gray;
+}
+
+ul{
+    list-style: none;
+    margin-top: 30px;
+    margin: auto;
+    width: 40%;
+}
+
+.contact{
+    display: flex;
+}
+
+.contact .details{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    font-size: 1.2rem;
+    border: 1px solid black;
+    text-align: center;
+    width: 80%;
+    margin-top: 10px;
+    padding: 10px;
+}
+
+.contact #delete-button{
+    width: 10%;
+    margin-top: 10px;
+}
+
+.contact #delete-button a button{
+    margin-right: 10px;
+    padding: 12px;
+}
+
+#new-contact-form{
+    text-align: center;
+    margin-top: 20px;
+}
+
+#new-contact-form input, button{
+    padding: 10px;
+}
