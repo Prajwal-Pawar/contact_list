@@ -3,6 +3,7 @@ const path = require('path');
 const port = 8000;
 
 const db = require('./config/mongoose');
+const Contact = require('./models/contact');
 
 const app = express();
 
@@ -23,9 +24,18 @@ var contactList = [
 ];
 
 app.get('/', function(req, res){
-    return res.render('index', {
-        contact_list: contactList
+
+    Contact.find({}, function(err, contact){
+        if(err){
+            console.log('error', err);
+            return;
+        }
+
+        return res.render('index', {
+            contact_list: contact
+        });
     });
+
 });
 
 app.get('/new_contact', function(req, res){
@@ -33,24 +43,34 @@ app.get('/new_contact', function(req, res){
 });
 
 app.post('/create-contact', function(req, res){
-    contactList.push(req.body);
-    return res.redirect('/');
+    // contactList.push(req.body);
+    Contact.create({
+        name: req.body.name,
+        phone: req.body.phone
+    }, function(err, newContact){
+        if(err){
+            console.log('error');
+            return;
+        }
+        console.log(newContact);
+        return res.redirect('back');
+    });
 });
 
 // deleting a contact
 app.get('/delete-contact', function(req, res){
-    //getting a phone number from query
-    let phone = req.query.phone;
+    //getting a id from query
+    let id = req.query.id;
 
-    // searching index of that phone in contactList
-    let contactIndex = contactList.findIndex(contact => contact.phone == phone);
-
-    //checking if phone number exists and deleting it
-    if(contactIndex != -1){
-        contactList.splice(contactIndex, 1);
-    }
-
-    return res.redirect('back');
+    // deleting a contact using that id
+    Contact.findByIdAndDelete(id, function(err){
+        if(err){
+            console.log('cant remove contact', err);
+            return;
+        }
+        
+        return res.redirect('back');
+    }) 
 });
 
 app.listen(port, function(err){
